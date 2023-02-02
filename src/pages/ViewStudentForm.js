@@ -1,10 +1,32 @@
+import { TextField } from '@mui/material';
 import React from 'react';
 
-const ViewStudentForm = () => {
+const ViewStudentForm = ({ student }) => {
     return (
-        <div>
-            view student
-        </div>
+        <form>
+            <TextField
+                label="Name"
+                // value={student.name}
+                disabled
+                fullWidth
+                margin="normal"
+            />
+            <TextField
+                label="Class"
+                // value={student.email}
+                disabled
+                fullWidth
+                margin="normal"
+            />
+            <TextField
+                label="Roll"
+                // value={student.email}
+                disabled
+                fullWidth
+                margin="normal"
+            />
+
+        </form>
     );
 };
 
