@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
     selectEmpty: {
         marginTop: theme.spacing(2),
     },
+    addStudentButton: {
+        backgroundColor: 'red'
+    }
 }));
 
 
@@ -36,8 +39,22 @@ const AddStudentForm = () => {
         setDivisionValue(event.target.value);
     };
 
+    const handleRollChange = (event) => {
+        const value = event.target.value;
+        if (!/^\d{0,2}$/.test(value)) {
+            event.target.value = value.slice(0, -1);
+        }
+    };
+
+    const handlePinCodeChange = (event) => {
+        const value = event.target.value;
+        if (!/^\d{0,6}$/.test(value)) {
+            event.target.value = value.slice(0, -1);
+        }
+    };
+
     return (
-        <div>
+        <div style={{ marginLeft: '250px' }}>
             <form noValidate autoComplete="off">
                 <TextField
                     id="first-name"
@@ -94,6 +111,7 @@ const AddStudentForm = () => {
                     variant="outlined"
                     fullWidth
                     margin="normal"
+                    onChange={handleRollChange}
                 />
                 <TextField
                     id="address-line-1"
@@ -104,6 +122,36 @@ const AddStudentForm = () => {
                     fullWidth
                     margin="normal"
                 />
+                <TextField
+                    id="address-line-1"
+                    label="Address Line 2"
+                    multiline
+                    rows={4}
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                />
+                <TextField
+                    label="Landmark"
+                    variant="outlined"
+                    margin="normal"
+                />
+                <TextField
+                    label="City"
+                    variant="outlined"
+                    margin="normal"
+                />
+                <TextField
+                    label="Pincode"
+                    variant="outlined"
+                    margin="normal"
+                    type="number"
+                    inputProps={{ min: 0, max: 999999, step: 1 }}
+                    onChange={handlePinCodeChange}
+                />
+                <Button type="submit" className={classes.addStudentButton}>
+                    Add Student
+                </Button>
             </form>
         </div>
     );
