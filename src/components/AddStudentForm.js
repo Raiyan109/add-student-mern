@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import { TextFields } from '@mui/icons-material';
 // import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 // import { makeStyles } from '@material-ui/core/styles';
@@ -9,6 +9,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
+import { db } from '../firebaseConfig'
+import { addDoc, collection } from 'firebase/firestore';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -19,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(2),
     },
     addStudentButton: {
+        margin: theme.spacing(3, 0, 2),
         backgroundColor: 'red'
     }
 }));
@@ -28,8 +31,13 @@ const AddStudentForm = () => {
 
     const classes = useStyles();
 
-    const [classValue, setClassValue] = React.useState('');
-    const [divisionValue, setDivisionValue] = React.useState('');
+    const [classValue, setClassValue] = useState('');
+    const [divisionValue, setDivisionValue] = useState('');
+    const [name, setName] = useState();
+    const [classs, setClasss] = useState();
+    const [roll, setRoll] = useState();
+
+
 
     const handleClassChange = (event) => {
         setClassValue(event.target.value);
@@ -40,6 +48,7 @@ const AddStudentForm = () => {
     };
 
     const handleRollChange = (event) => {
+        setRoll(event.target.value)
         const value = event.target.value;
         if (!/^\d{0,2}$/.test(value)) {
             event.target.value = value.slice(0, -1);
@@ -53,6 +62,18 @@ const AddStudentForm = () => {
         }
     };
 
+    const userCollectionRef = collection(db, 'contactData')
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // your form submit function here
+        addDoc(userCollectionRef, {
+            name: name,
+            class: classs,
+            roll: roll
+        })
+    };
+
     return (
         <div style={{ marginLeft: '250px' }}>
             <form noValidate autoComplete="off">
@@ -62,6 +83,9 @@ const AddStudentForm = () => {
                     variant="outlined"
                     fullWidth
                     margin="normal"
+                    onChange={(event) => {
+                        setName(event.target.value)
+                    }}
                 />
                 <TextField
                     id="middle-name"
@@ -84,6 +108,9 @@ const AddStudentForm = () => {
                         id="class-select"
                         value={classValue}
                         onChange={handleClassChange}
+                    // onChange={(event) =>{
+                    //     setClasss(event.target.value)
+                    // }}
                     >
                         {Array.from({ length: 12 }, (_, i) => i + 1).map((num) => (
                             <MenuItem key={num} value={num}>{num}</MenuItem>
@@ -149,7 +176,12 @@ const AddStudentForm = () => {
                     inputProps={{ min: 0, max: 999999, step: 1 }}
                     onChange={handlePinCodeChange}
                 />
-                <Button type="submit" className={classes.addStudentButton}>
+                <Button
+                    type="submit"
+                    className={classes.addStudentButton}
+                    onClick={handleSubmit}
+                    variant="contained"
+                >
                     Add Student
                 </Button>
             </form>
