@@ -58,7 +58,7 @@ const SideNav = () => {
     //     setOpen(false);
     // };
     return (
-        <div>
+        <div style={{ marginTop: '60px' }}>
 
             <Drawer
                 variant="permanent"

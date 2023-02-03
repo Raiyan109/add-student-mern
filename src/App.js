@@ -35,7 +35,6 @@ const router = createBrowserRouter([
         path: "/manage",
         element: <ManageStudents />
       },
-
     ]
   },
   {
